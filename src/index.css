@@ -1,0 +1,29 @@
+.nav-link {
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  text-decoration: none;
+  color: #9ca3af;
+  border: 1px solid transparent;
+  transition: all 0.18s ease-out;
+  cursor: pointer;
+}
+
+.nav-link:hover {
+  color: #e5e7eb;
+  background-color: rgba(31, 41, 55, 0.7);
+}
+
+.nav-link-active {
+  color: #e5e7eb;
+  background-color: rgba(31, 41, 55, 0.9);
+  border-color: rgba(148, 163, 184, 0.7);
+  box-shadow: 0 0 12px rgba(15, 23, 42, 0.8);
+}
+
+.nav-link-inactive {
+  /* optional extra styles for inactive links */
+}
+
+.nav-link span {
+  vertical-align: middle;
+}
