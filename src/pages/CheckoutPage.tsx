@@ -29,6 +29,7 @@ export default function CheckoutPage() {
   const [touched, setTouched] = useState<{ name?: boolean; address?: boolean; email?: boolean }>({});
   const [error, setError] = useState<string | null>(null);
   const [showMap, setShowMap] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false); // ✅ NEW
   
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstance = useRef<any>(null);
@@ -43,6 +44,16 @@ export default function CheckoutPage() {
     () => items.reduce((sum, item) => sum + (item.quantity ?? 1), 0),
     [items]
   );
+
+  // ✅ NEW: Auto-hide success message
+  useEffect(() => {
+    if (showSuccessMessage) {
+      const timer = setTimeout(() => {
+        setShowSuccessMessage(false);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [showSuccessMessage]);
 
   // Load OpenLayers dynamically
   useEffect(() => {
@@ -60,7 +71,7 @@ export default function CheckoutPage() {
     document.head.appendChild(css);
   }, []);
 
-  // Initialize OpenLayers map - FIXED
+  // Initialize OpenLayers map
   const initMap = useCallback(() => {
     if (!mapRef.current || !window.ol || mapInstance.current) return;
 
@@ -69,12 +80,11 @@ export default function CheckoutPage() {
     const TileLayer = window.ol.layer.Tile;
     const OSM = window.ol.source.OSM;
     const VectorLayer = window.ol.layer.Vector;
-    const VectorSource = window.ol.source.Vector;  // ✅ FIXED: Proper constructor path
+    const VectorSource = window.ol.source.Vector;
     const Point = window.ol.geom.Point;
     const Style = window.ol.style.Style;
     const Icon = window.ol.style.Icon;
 
-    // Create map
     const map = new Map({
       target: mapRef.current,
       layers: [
@@ -85,13 +95,12 @@ export default function CheckoutPage() {
         })
       ],
       view: new View({
-        center: window.ol.proj.fromLonLat([4.9041, 52.3676]), // Amsterdam
+        center: window.ol.proj.fromLonLat([4.9041, 52.3676]),
         zoom: 13
       })
     });
 
-    // Add marker
-    const markerSource = new VectorSource({});  // ✅ FIXED: Proper instantiation
+    const markerSource = new VectorSource({});
     const markerStyle = new Style({
       image: new Icon({
         src: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJDOC43MTUyOCAyIDQgNS43MTU0NyA0IDEyQzQgMTguMjg0NiA3LjE5Mjg5IDIxIDExLjUgMjFDMTMuMjg0NiAyMSAxNiAxOC4yODQ2IDE2IDEyQzE2IDUuNzE1NDcgMTMuMjg0NiAyIDExLjUgMkMxMC4yOTI5IDIgOS4wOTI4OSAyLjI5MDQzIDguNDk5OTkgMi40OTk0MUwxMiAxMFYxMkgxMkwxNS41MDAxIDE1LjUwMDA2QzE1LjcwOTcgMTUuMDk5IDE2LjAwMDcgMTQuNzA5IDE2LjAwMDcgMTQuNUMxNiAwOS4yODQ2IDEzLjI4NDYgNiAxMS41IDZDNS43MTU0NyA2IDIgOS4yODQ2IDIgMTJDMiAxOC4yODQ2IDUuNzE1NDcgMjEgMTEuNSAyMUMxNy4yODQ2IDIxIDIwIDE4LjI4NDYgMjAgMTJDMjAgNS43MTU0NyAxNy4yODQ2IDIgMTEuNSAyWkZpbGw9IiM0RTY2RkYiLz4KPC9zdmc+',
@@ -110,18 +119,18 @@ export default function CheckoutPage() {
     });
     map.addLayer(vectorLayer);
 
-    // ✅ FIXED CLICK HANDLER
+    // ✅ FIXED + SUCCESS MESSAGE
     map.on('singleclick', (evt: any) => {
       const coord = evt.coordinate;
       const lonLat = window.ol.proj.toLonLat(coord);
       markerFeature.current!.getGeometry()!.setCoordinates(coord);
       reverseGeocode(lonLat[0], lonLat[1]);
+      setShowSuccessMessage(true); // ✅ SHOW MESSAGE
     });
 
     mapInstance.current = map;
   }, []);
 
-  // Reverse geocoding
   const reverseGeocode = async (lng: number, lat: number) => {
     try {
       const response = await fetch(
@@ -136,7 +145,6 @@ export default function CheckoutPage() {
     }
   };
 
-  // Get user location
   const getUserLocation = useCallback(async () => {
     if (!navigator.geolocation) return;
 
@@ -181,15 +189,12 @@ export default function CheckoutPage() {
     }
   };
 
-  // ✅ FIXED: Initialize map and handle show/hide
   useEffect(() => {
     if (!window.ol || !mapRef.current) return;
 
     if (!mapInstance.current) {
-      // Initialize map
       setTimeout(initMap, 100);
     } else if (showMap) {
-      // Show map - update size
       mapInstance.current.setTarget(mapRef.current);
       setTimeout(() => {
         mapInstance.current.updateSize();
@@ -254,7 +259,6 @@ export default function CheckoutPage() {
         )}
 
         <form onSubmit={handleSubmit} noValidate>
-          {/* Name field */}
           <div style={{ marginBottom: "0.75rem" }}>
             <label style={{ fontWeight: 500, display: "block", marginBottom: 4 }}>Full name</label>
             <input 
@@ -268,7 +272,6 @@ export default function CheckoutPage() {
             {touched.name && !isNameValid && <span style={{ color: "#b00020", fontSize: 12 }}>Please enter at least 2 characters.</span>}
           </div>
 
-          {/* Email field */}
           <div style={{ marginBottom: "0.75rem" }}>
             <label style={{ fontWeight: 500, display: "block", marginBottom: 4 }}>Email (optional)</label>
             <input 
@@ -282,7 +285,6 @@ export default function CheckoutPage() {
             {touched.email && !isEmailValid && <span style={{ color: "#b00020", fontSize: 12 }}>Please enter a valid email address.</span>}
           </div>
 
-          {/* Address + Map */}
           <div style={{ marginBottom: "0.75rem" }}>
             <label style={{ fontWeight: 500, display: "block", marginBottom: 4 }}>Delivery address</label>
             
@@ -312,11 +314,32 @@ export default function CheckoutPage() {
             />
             {touched.address && !isAddressValid && <span style={{ color: "#b00020", fontSize: 12 }}>Please enter a full delivery address.</span>}
 
-            {/* ✅ FIXED: Added explicit width + proper height handling */}
+            {/* ✅ SUCCESS MESSAGE ABOVE MAP */}
+            {showSuccessMessage && (
+              <div style={{
+                position: "absolute",
+                top: showMap ? "calc(50% - 160px)" : "0",
+                left: "50%",
+                transform: "translateX(-50%)",
+                background: "#10b981",
+                color: "white",
+                padding: "0.5rem 1rem",
+                borderRadius: "6px",
+                fontWeight: 500,
+                fontSize: "14px",
+                zIndex: 1000,
+                boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                animation: "fadeInOut 1s ease-in-out forwards"
+              }}>
+                ✅ Address successfully changed
+              </div>
+            )}
+
             <div
               ref={mapRef}
               style={{
-                width: "100%",           // ✅ CRITICAL: Explicit width
+                position: "relative",
+                width: "100%",
                 height: showMap ? "320px" : "0px",
                 minHeight: showMap ? "320px" : "0px",
                 overflow: "hidden",
@@ -336,7 +359,6 @@ export default function CheckoutPage() {
             </button>
           </div>
 
-          {/* Notes field */}
           <div style={{ marginBottom: "1rem" }}>
             <label style={{ fontWeight: 500, display: "block", marginBottom: 4 }}>Order notes (optional)</label>
             <textarea 
@@ -358,7 +380,6 @@ export default function CheckoutPage() {
         </form>
       </div>
 
-      {/* Order summary */}
       <aside style={{ borderLeft: "1px solid #e5e7eb", paddingLeft: "1.5rem" }}>
         <h2 style={{ marginBottom: "0.75rem" }}>Order summary</h2>
         <p style={{ fontSize: 14, color: "#555", marginBottom: "0.75rem" }}>
