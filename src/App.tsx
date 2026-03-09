@@ -4,9 +4,9 @@ import { useCompare } from "./context/CompareContext";  // 👈 CORRECT path
 import HomePage from "./pages/HomePage/HomePage";
 import ItemPage from "./pages/ItemPage";
 import CartPage from "./pages/CartPage/CartPage";
-import CheckoutPage from "./pages/CheckoutPage";
+import CheckoutPage from "./pages/CheckoutPage/CheckoutPage";
 import OrdersPage from "./pages/OrdersPage";
-import ComparePage from "./pages/ComparePage"; // 👈 ADDED
+import ComparePage from "./pages/ComparePage/ComparePage"; // 👈 ADDED
 
 const navItems = [
   { to: "/", label: "Catalog", icon: "🏪" },
