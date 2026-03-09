@@ -93,8 +93,8 @@ export default function HomePage() {
                 <p className="product-price">€{p.price.toFixed(2)}</p>
                 <button 
                   onClick={(e) => {
-                    e.preventDefault(); // Prevent navigation
-                    e.stopPropagation(); // Stop bubbling
+                    e.preventDefault();
+                    e.stopPropagation(); 
                     addToCart(p);
                   }}
                   className="btn btn-primary"

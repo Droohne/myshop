@@ -29,7 +29,7 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false);
   const [touched, setTouched] = useState<{ name?: boolean; address?: boolean; email?: boolean }>({});
   const [error, setError] = useState<string | null>(null);
-  const [showMap, setShowMap] = useState(true); // ✅ ALWAYS SHOW MAP
+  const [showMap, setShowMap] = useState(true); 
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   
   const mapRef = useRef<HTMLDivElement>(null);
@@ -46,7 +46,6 @@ export default function CheckoutPage() {
     [items]
   );
 
-  // 1. SUCCESS MESSAGE AUTO-HIDE
   useEffect(() => {
     if (showSuccessMessage) {
       const timer = setTimeout(() => {
@@ -56,7 +55,7 @@ export default function CheckoutPage() {
     }
   }, [showSuccessMessage]);
 
-  // 2. LOAD OPENLAYERS
+
   useEffect(() => {
     if (window.ol) return;
 
@@ -72,7 +71,7 @@ export default function CheckoutPage() {
     document.head.appendChild(css);
   }, []);
 
-  // 3. REVERSE GEOCODE - FIRST
+
   const reverseGeocode = useCallback(async (lng: number, lat: number) => {
     try {
       const response = await fetch(
@@ -83,15 +82,14 @@ export default function CheckoutPage() {
         setAddress(data.display_name);
       }
     } catch (err) {
-      console.error('Geocoding failed');
     }
   }, []);
 
-  // 4. INIT MAP - MOSCOW DEFAULT ✅
+
   const initMap = useCallback(() => {
     if (!mapRef.current || !window.ol || mapInstance.current) return;
 
-    // DESTROY OLD MAP
+
     if (mapInstance.current) {
       mapInstance.current.setTarget(undefined);
       mapInstance.current = null;
@@ -107,7 +105,6 @@ export default function CheckoutPage() {
     const Style = window.ol.style.Style;
     const Icon = window.ol.style.Icon;
 
-    // ✅ MOSCOW COORDINATES: [37.6173, 55.7558]
     const moscowCenter = window.ol.proj.fromLonLat([37.6173, 55.7558]);
 
     const map = new Map({
@@ -120,8 +117,8 @@ export default function CheckoutPage() {
         })
       ],
       view: new View({
-        center: moscowCenter,  // ✅ MOSCOW
-        zoom: 12               // ✅ CITY VIEW
+        center: moscowCenter,  
+        zoom: 12               
       })
     });
 
@@ -134,7 +131,7 @@ export default function CheckoutPage() {
     });
 
     markerFeature.current = new window.ol.Feature({
-      geometry: new Point(moscowCenter)  // ✅ MOSCOW MARKER
+      geometry: new Point(moscowCenter)  
     });
     markerFeature.current.setStyle(markerStyle);
     markerSource.addFeature(markerFeature.current);
@@ -144,7 +141,7 @@ export default function CheckoutPage() {
     });
     map.addLayer(vectorLayer);
 
-    // AUTO GEOCODE MOSCOW ON LOAD
+
     reverseGeocode(37.6173, 55.7558);
 
     map.on('singleclick', (evt: any) => {
@@ -158,14 +155,12 @@ export default function CheckoutPage() {
     mapInstance.current = map;
   }, [reverseGeocode]);
 
-  // 5. GET LOCATION - THIRD
-  const getUserLocation = useCallback(async () => {
-    console.log("🔍 Starting geolocation...");
-    
+
+  const getUserLocation = useCallback(async () => {    
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude, accuracy } = position.coords;
-        console.log("✅ SUCCESS:", { latitude, longitude, accuracy });
+
         
         if (mapInstance.current && markerFeature.current) {
           const center = window.ol.proj.fromLonLat([longitude, latitude]);
@@ -176,7 +171,6 @@ export default function CheckoutPage() {
         }
       },
       (error) => {
-        console.error("ERROR:", error);
       },
       { 
         enableHighAccuracy: true, 
@@ -186,7 +180,7 @@ export default function CheckoutPage() {
     );
   }, [reverseGeocode]);
 
-  // 6. ADDRESS SEARCH
+
   const handleAddressSearch = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     setAddress(value);
@@ -194,7 +188,7 @@ export default function CheckoutPage() {
     if (value.length >= 3) {
       try {
         const response = await fetch(
-          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(value)}&limit=1&countrycodes=RU` // ✅ RUSSIA
+          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(value)}&limit=1&countrycodes=RU` 
         );
         const [result] = await response.json();
         if (result && mapInstance.current) {
@@ -205,18 +199,17 @@ export default function CheckoutPage() {
           markerFeature.current!.getGeometry()!.setCoordinates(window.ol.proj.fromLonLat([lon, lat]));
         }
       } catch (err) {
-        console.error('Search failed');
       }
     }
   };
 
-  // 7. MAP LIFECYCLE - LOADS IMMEDIATELY
+
   useEffect(() => {
     if (!window.ol || !mapRef.current) return;
 
     const timeoutId = setTimeout(() => {
       initMap();
-    }, 100); // ✅ FASTER LOAD
+    }, 100); 
 
     return () => {
       clearTimeout(timeoutId);
@@ -225,7 +218,7 @@ export default function CheckoutPage() {
         mapInstance.current = null;
       }
     };
-  }, [initMap]); // ✅ NO showMap DEPENDENCY
+  }, [initMap]); 
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();

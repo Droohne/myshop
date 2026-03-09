@@ -6,7 +6,7 @@ type CompareContextType = {
   addToCompare: (product: Product) => void;
   removeFromCompare: (id: number) => void;
   clearCompare: () => void;
-  hasProduct: (id: number) => boolean;  // 👈 This was broken
+  hasProduct: (id: number) => boolean;  
 };
 
 const CompareContext = createContext<CompareContextType | undefined>(undefined);
@@ -17,7 +17,7 @@ export function CompareProvider({ children }: { children: ReactNode }) {
   const addToCompare = (product: Product) => {
     setItems((prev) => {
       if (prev.find((p) => p.id === product.id)) return prev;
-      return [...prev, product].slice(0, 4); // Max 4 items
+      return [...prev, product].slice(0, 4); 
     });
   };
 
@@ -27,7 +27,7 @@ export function CompareProvider({ children }: { children: ReactNode }) {
 
   const clearCompare = () => setItems([]);
 
-  // 👈 FIXED: Wrong comparison p.id === p.id (always true)
+
   const hasProduct = (id: number) => items.some((p) => p.id === id);
 
   return (

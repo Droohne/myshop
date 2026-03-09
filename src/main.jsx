@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App.tsx";
 import "./index.css";
 import { CartProvider } from "./context/CartContext.tsx";
-import { CompareProvider } from "./context/CompareContext.tsx"; // 👈 ADD
+import { CompareProvider } from "./context/CompareContext.tsx"; 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

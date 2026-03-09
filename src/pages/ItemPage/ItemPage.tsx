@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
-import { products } from "../data/products";
-import { useCart } from "../context/CartContext";
-import { useCompare } from "../context/CompareContext";
+import { products } from "../../data/products";
+import { useCart } from "../../context/CartContext";
+import { useCompare } from "../../context/CompareContext";
 import "./ItemPage.css";
 
 const categoryConfigs = {

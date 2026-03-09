@@ -1,24 +1,24 @@
 import { Routes, Route, NavLink } from "react-router-dom";
-import { useCart } from "./context/CartContext";        // 👈 CORRECT path
-import { useCompare } from "./context/CompareContext";  // 👈 CORRECT path
+import { useCart } from "./context/CartContext";        
+import { useCompare } from "./context/CompareContext";  
 import HomePage from "./pages/HomePage/HomePage";
 import ItemPage from "./pages/ItemPage/ItemPage";
 import CartPage from "./pages/CartPage/CartPage";
 import CheckoutPage from "./pages/CheckoutPage/CheckoutPage";
-import OrdersPage from "./pages/OrdersPage";
-import ComparePage from "./pages/ComparePage/ComparePage"; // 👈 ADDED
+import OrdersPage from "./pages/OrdersPage/OrdersPage";
+import ComparePage from "./pages/ComparePage/ComparePage"; 
 
 const navItems = [
   { to: "/", label: "Catalog", icon: "🏪" },
   { to: "/cart", label: "Cart", icon: "🛒" },
   { to: "/checkout", label: "Checkout", icon: "💳" },
   { to: "/orders", label: "Orders", icon: "📦" },
-  { to: "/compare", label: "Compare", icon: "⚖️" }, // 👈 ADDED
+  { to: "/compare", label: "Compare", icon: "⚖️" }, 
 ];
 
 function App() {
   const { items: cartItems } = useCart();
-  const { items: compareItems } = useCompare(); // 👈 FIXED: Added compare badge
+  const { items: compareItems } = useCompare(); 
 
   return (
     <div className="App">
