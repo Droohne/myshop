@@ -1,8 +1,8 @@
 import { useState, useMemo } from "react";
-import { products } from "../data/products";
-import { useCart } from "../context/CartContext";
+import { products } from "../../data/products";
+import { useCart } from "../../context/CartContext";
 import { Link } from "react-router-dom";
-import "./HomePage.css"; // 👈 External CSS
+import "./HomePage.css"; 
 
 export default function HomePage() {
   const [category, setCategory] = useState("all");
@@ -76,31 +76,33 @@ export default function HomePage() {
           </div>
         ) : (
           filtered.map((p) => (
-            <div key={p.id} className="product-card">
-              <img
-                src={p.image}
-                alt={p.name}
-                loading="lazy"
-                className="product-image"
-              />
-              <h3 className="product-name">{p.name}</h3>
-              <p className="product-description">{p.description}</p>
-              <p className="product-price">€{p.price.toFixed(2)}</p>
-              <div className="product-actions">
+            <Link 
+              to={`/item/${p.id}`}
+              key={p.id} 
+              className="product-card-link"
+            >
+              <div className="product-card">
+                <img
+                  src={p.image}
+                  alt={p.name}
+                  loading="lazy"
+                  className="product-image"
+                />
+                <h3 className="product-name">{p.name}</h3>
+                <p className="product-description">{p.description}</p>
+                <p className="product-price">€{p.price.toFixed(2)}</p>
                 <button 
-                  onClick={() => addToCart(p)}
+                  onClick={(e) => {
+                    e.preventDefault(); // Prevent navigation
+                    e.stopPropagation(); // Stop bubbling
+                    addToCart(p);
+                  }}
                   className="btn btn-primary"
                 >
                   Add to cart
                 </button>
-                <Link 
-                  to={`/item/${p.id}`}
-                  className="btn btn-outline"
-                >
-                  View
-                </Link>
               </div>
-            </div>
+            </Link>
           ))
         )}
       </div>

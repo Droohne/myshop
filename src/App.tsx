@@ -1,9 +1,9 @@
 import { Routes, Route, NavLink } from "react-router-dom";
 import { useCart } from "./context/CartContext";        // 👈 CORRECT path
 import { useCompare } from "./context/CompareContext";  // 👈 CORRECT path
-import HomePage from "./pages/HomePage";
+import HomePage from "./pages/HomePage/HomePage";
 import ItemPage from "./pages/ItemPage";
-import CartPage from "./pages/CartPage";
+import CartPage from "./pages/CartPage/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import OrdersPage from "./pages/OrdersPage";
 import ComparePage from "./pages/ComparePage"; // 👈 ADDED

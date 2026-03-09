@@ -1,27 +1,19 @@
-/* HomePage.css */
+/* HomePage.css - Clickable cards */
 .homepage {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 0 0 2rem 0; 
 }
 
 .homepage__title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, #1e293b, #334155);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 2.5rem;
-  text-align: center;
+  font-size: 2rem; 
+  margin-bottom: 2rem;
+  text-align: left;
 }
 
-/* Filters */
 .filters {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1rem;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
   padding: 1.5rem;
   background: #f8fafc;
   border-radius: 12px;
@@ -38,18 +30,15 @@
   margin-bottom: 0.5rem;
   font-weight: 500;
   color: #374151;
-  font-size: 0.95rem;
 }
 
 .filter-input,
 .filter-select {
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem;
   border: 2px solid #e2e8f0;
   border-radius: 8px;
   font-size: 1rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  background: white;
 }
 
 .filter-input:focus,
@@ -59,85 +48,81 @@
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-/* Products Grid */
 .products-grid {
   display: grid;
   gap: 1.5rem;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+/* 👇 NEW: Clickable card wrapper */
+.product-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-card-link:hover .product-card {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.2);
 }
 
 .product-card {
   border: 1px solid #e2e8f0;
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 1.25rem;
   background: white;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s;
+  cursor: pointer;
   position: relative;
-  overflow: hidden;
-}
-
-.product-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.2);
-  border-color: #3b82f6;
 }
 
 .product-image {
   width: 100%;
-  height: 200px;
+  height: 160px;
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 1rem;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.product-image.loaded {
-  opacity: 1;
 }
 
 .product-name {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
   color: #1e293b;
-  line-height: 1.3;
 }
 
 .product-description {
   color: #64748b;
   margin-bottom: 1rem;
   font-size: 0.95rem;
-  line-height: 1.5;
 }
 
 .product-price {
-  font-size: 1.5rem;
-  font-weight: 800;
+  font-size: 1.25rem;
+  font-weight: 700;
   color: #1e293b;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
 }
 
-/* Buttons */
+/* Single Add to Cart button */
 .product-actions {
-  display: flex;
-  gap: 0.75rem;
+  margin-top: auto;
 }
 
 .btn {
-  padding: 0.875rem 1.25rem;
+  padding: 0.75rem;
+  width: 100%;
   border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
   border: none;
-  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 0.95rem;
 }
 
 .btn-primary {
@@ -148,22 +133,8 @@
 .btn-primary:hover {
   background: #2563eb;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
 }
 
-.btn-outline {
-  background: transparent;
-  color: #3b82f6;
-  border: 2px solid #3b82f6;
-}
-
-.btn-outline:hover {
-  background: #3b82f6;
-  color: white;
-  transform: translateY(-1px);
-}
-
-/* Empty State */
 .no-products {
   grid-column: 1 / -1;
   text-align: center;
@@ -172,43 +143,11 @@
 }
 
 .no-products h3 {
-  margin-bottom: 0.5rem;
-  font-size: 1.5rem;
-  font-weight: 600;
+  margin-bottom: 1rem;
 }
 
-.no-products p {
-  font-size: 1rem;
-  opacity: 0.8;
-}
-
-/* Responsive */
 @media (max-width: 768px) {
-  .homepage {
-    padding: 1.5rem 1rem;
-  }
-  
-  .homepage__title {
-    font-size: 2rem;
-  }
-  
   .filters {
-    grid-template-columns: 1fr;
-    padding: 1.25rem;
-  }
-  
-  .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
-  }
-  
-  .product-actions {
-    flex-direction: column;
-  }
-}
-
-@media (max-width: 480px) {
-  .products-grid {
     grid-template-columns: 1fr;
   }
 }
