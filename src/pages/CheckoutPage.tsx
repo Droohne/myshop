@@ -145,26 +145,34 @@ export default function CheckoutPage() {
     }
   };
 
-  const getUserLocation = useCallback(async () => {
-    if (!navigator.geolocation) return;
+const getUserLocation = useCallback(async () => {
+  console.log("🔍 Starting geolocation...");
+  
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const { latitude, longitude, accuracy } = position.coords;
+      console.log("✅ SUCCESS:", { latitude, longitude, accuracy });
+      
+      if (mapInstance.current && markerFeature.current) {
+        const center = window.ol.proj.fromLonLat([longitude, latitude]);
+        mapInstance.current.getView().setCenter(center);
+        mapInstance.current.getView().setZoom(15);
+        markerFeature.current!.getGeometry()!.setCoordinates(center);
+        reverseGeocode(longitude, latitude);
+      }
+    },
+    (error) => {
+      console.error("ERROR CODE:", error.code);
+      console.error("ERROR MSG:", error.message);
+    },
+    { 
+      enableHighAccuracy: true, 
+      timeout: 15000,
+      maximumAge: 0 
+    }
+  );
+}, []);
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        
-        if (mapInstance.current) {
-          mapInstance.current.getView().setCenter(window.ol.proj.fromLonLat([longitude, latitude]));
-          mapInstance.current.getView().setZoom(15);
-          markerFeature.current!.getGeometry()!.setCoordinates(window.ol.proj.fromLonLat([longitude, latitude]));
-          reverseGeocode(longitude, latitude);
-        }
-      },
-      () => {
-        setAddress("Amsterdam, Netherlands");
-      },
-      { enableHighAccuracy: true, timeout: 10000 }
-    );
-  }, []);
 
   const handleAddressSearch = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
