@@ -1,0 +1,256 @@
+/* CONTAINER */
+.item-page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* BREADCRUMB */
+.breadcrumb {
+  margin-bottom: 2rem;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.breadcrumb a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb-current {
+  font-weight: 500;
+  color: #1e293b;
+}
+
+/* MAIN GRID */
+.item-page-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* IMAGE SECTION */
+.image-section {
+  position: relative;
+}
+
+.product-image {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.category-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #3b82f6;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-top: 1rem;
+}
+
+/* PRODUCT DETAILS */
+.product-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-title {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+  color: #1e293b;
+}
+
+.product-price {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ec4899;
+  margin-bottom: 2rem;
+}
+
+.product-description {
+  color: #64748b;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+/* FEATURES SECTION */
+.features-section {
+  margin-bottom: 2rem;
+}
+
+.features-title {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: #1e293b;
+}
+
+.features-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.feature-tag {
+  background: #f1f5f9;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #475569;
+}
+
+/* EXTRA INFO */
+.extra-info {
+  margin-top: 1rem;
+}
+
+.extra-spec {
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.size-guide {
+  cursor: pointer;
+}
+
+.size-guide-trigger {
+  color: #3b82f6;
+  font-weight: 500;
+  list-style: none;
+}
+
+.size-guide-trigger::-webkit-details-marker {
+  display: none;
+}
+
+.size-guide-content {
+  margin-top: 0.5rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+/* ACTION BUTTONS */
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.add-to-cart-btn {
+  flex: 1;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(59,130,246,0.4);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.add-to-cart-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(59,130,246,0.5);
+}
+
+.compare-btn {
+  padding: 1.25rem;
+  background: transparent;
+  color: #3b82f6;
+  border: 2px solid #3b82f6;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+}
+
+.compare-btn:hover {
+  background: #3b82f6;
+  color: white;
+}
+
+/* BACK LINK */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #64748b;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.back-link:hover {
+  color: #3b82f6;
+}
+
+/* NOT FOUND */
+.not-found {
+  padding: 2rem;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.not-found h2 {
+  color: #1e293b;
+  margin-bottom: 1rem;
+}
+
+.not-found a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.not-found a:hover {
+  text-decoration: underline;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .item-page-container {
+    padding: 1rem;
+  }
+  
+  .item-page-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .product-image {
+    height: 350px;
+  }
+  
+  .product-title {
+    font-size: 2rem;
+  }
+  
+  .product-price {
+    font-size: 1.75rem;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+}
